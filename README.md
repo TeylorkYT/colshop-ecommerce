@@ -1,6 +1,6 @@
 # 🛒 Colshop - E-commerce Seguro (React + PHP)
 
-**🚀 Live Demo:** [https://tu-dominio.com](https://tu-dominio.com) _(Reemplaza con tu enlace real)_
+**🚀 Live Demo:** [https://tu-dominio.com](https://colshop.net)
 
 Plataforma de comercio electrónico moderna y segura para la venta de productos digitales (Robux, Cuentas, etc.), construida con una arquitectura híbrida de Frontend en React y Backend en PHP nativo.
 
