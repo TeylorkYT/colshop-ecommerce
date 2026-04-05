@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://colshop.net/sitemap.xml

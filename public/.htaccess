@@ -1,0 +1,25 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Forzar HTTPS y asegurar que el dominio sea exactamente colshop.net (SEO Friendly, sin www)
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\.colshop\.net$ [NC]
+  RewriteRule ^(.*)$ https://colshop.net/$1 [L,R=301]
+
+  # 2. Si la petición es para la API de PHP, déjala pasar sin interferir
+  RewriteCond %{REQUEST_URI} ^/api/.*$ [NC]
+  RewriteRule ^ - [L]
+
+  # 3. Si el archivo o directorio realmente existe (JS, CSS, Imágenes), sírvelo
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # 4. Si no existe la ruta física, redirige al index.html para que React Router haga su trabajo
+  RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+# 5. Asegurar que los archivos JS se sirvan con el MIME type correcto (evita el error text/html)
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+</IfModule>

@@ -1,0 +1,36 @@
+# SEGURIDAD HOSTINGER: Proteger archivos sensibles
+
+# 1. Bloquear acceso web directo a archivos de configuración y base de datos
+
+# Nadie puede descargar tus claves entrando a /api/config.php
+
+<FilesMatch "^(db|config)\.php$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+# 2. Bloquear acceso a logs o scripts de instalación si se te olvidó borrarlos
+
+<FilesMatch "^(install_db|transaction_logs)\.(php|log|txt)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+# 3. Bloquear acceso a archivos ocultos (que empiezan por punto)
+
+<FilesMatch "^\.">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+# 4. Evitar que la gente vea la lista de archivos de la carpeta (Directory Listing)
+
+Options -Indexes
+
+# 5. Forzar HTTPS (Opcional, pero recomendado si no lo tienes en el root)
+
+<IfModule mod_rewrite.c>
+ RewriteEngine On
+ RewriteCond %{HTTPS} off
+ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
