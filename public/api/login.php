@@ -3,6 +3,8 @@ include_once 'db.php';
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->email) && isset($data->password)) {
+    check_rate_limit($conn, 'login', 5, 15);
+    
     $query = "SELECT id, email, password, role FROM users WHERE email = :email";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(":email", $data->email);
@@ -47,10 +49,12 @@ if(isset($data->email) && isset($data->password)) {
             ]);
         }
         else {
+            record_failed_attempt($conn, 'login');
             http_response_code(401);
             echo json_encode(["error" => "Credenciales inválidas"]);
         }
     } else {
+        record_failed_attempt($conn, 'login');
         http_response_code(401);
         echo json_encode(["error" => "Credenciales inválidas"]);
     }

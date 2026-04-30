@@ -235,6 +235,6 @@ try {
     
     http_response_code(500);
     error_log("Error en create_order.php: " . $e->getMessage());
-    echo json_encode(["error" => "Error interno del servidor al crear la orden.", "details" => $e->getMessage()]);
+    echo json_encode(["error" => "Error interno del servidor al crear la orden."]);
 }
 ?>

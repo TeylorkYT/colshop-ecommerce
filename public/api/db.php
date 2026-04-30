@@ -24,7 +24,7 @@ define('ORDER_STATUS_CANCELLED', 'cancelled');
 
 // 3. Configuración de Seguridad y Headers
 // SEGURIDAD: Manejo dinámico de CORS para permitir desarrollo local seguro
-$allowed_origins = ['https://colshop.net', 'https://www.colshop.net', 'http://localhost:3000', 'http://localhost:5173'];
+$allowed_origins = ['https://colshop.net', 'https://www.colshop.net'];
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
 if (in_array($origin, $allowed_origins)) {
@@ -95,5 +95,44 @@ function secure_log($message) {
     if (!file_exists($logFile)) { file_put_contents($logFile, "<?php die('Access Denied'); ?>\n"); }
     $cleanMessage = str_replace(array("\r", "\n"), ' ', $message);
     file_put_contents($logFile, "[$date] $cleanMessage\n", FILE_APPEND);
+}
+
+// 10. Funciones de Rate Limiting (Protección contra Fuerza Bruta)
+function check_rate_limit($conn, $action, $max_attempts = 5, $minutes = 15) {
+    $ip_address = $_SERVER['REMOTE_ADDR'] ?? 'Unknown';
+    
+    // Crear tabla si no existe
+    $conn->exec("CREATE TABLE IF NOT EXISTS login_attempts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        ip_address VARCHAR(45) NOT NULL,
+        action VARCHAR(20) NOT NULL,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX (ip_address, action, timestamp)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+    // Limpieza ocasional (1% de probabilidad para no afectar rendimiento)
+    if (rand(1, 100) === 1) {
+        $conn->exec("DELETE FROM login_attempts WHERE timestamp < NOW() - INTERVAL 1 HOUR");
+    }
+
+    $stmt_limit = $conn->prepare("SELECT COUNT(*) FROM login_attempts WHERE ip_address = :ip AND action = :action AND timestamp > NOW() - INTERVAL " . (int)$minutes . " MINUTE");
+    $stmt_limit->execute([':ip' => $ip_address, ':action' => $action]);
+    $attempts = $stmt_limit->fetchColumn();
+
+    if ($attempts >= $max_attempts) {
+        http_response_code(429);
+        echo json_encode(["error" => "Demasiados intentos. Por favor, intenta de nuevo en $minutes minutos."]);
+        exit;
+    }
+}
+
+function record_failed_attempt($conn, $action) {
+    $ip_address = $_SERVER['REMOTE_ADDR'] ?? 'Unknown';
+    try {
+        $stmt_fail = $conn->prepare("INSERT INTO login_attempts (ip_address, action) VALUES (:ip, :action)");
+        $stmt_fail->execute([':ip' => $ip_address, ':action' => $action]);
+    } catch (PDOException $e) {
+        // Ignorar si la tabla aún no fue creada
+    }
 }
 ?>

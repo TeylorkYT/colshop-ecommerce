@@ -26,6 +26,7 @@ pids
 # Security: Ignore sensitive credentials and configurations
 /private_config/
 config.php
+transaction_logs.php
 uploads/
 node_modules
 .vite/

@@ -11,6 +11,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
 
+import DOMPurify from 'dompurify';
+
 // FIX: Decodificador recursivo para renderizar HTML escapado múltiples veces desde la BD
 const parseHTML = (htmlStr) => {
   if (!htmlStr) return '';
@@ -231,7 +233,7 @@ const ProductDetail = () => {
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20 shadow-lg shadow-purple-900/10">
                 <div 
                   className="text-gray-200 text-lg leading-relaxed [&>p]:mb-4 [&>ul]:list-disc [&>ul]:ml-6 [&>ol]:list-decimal [&>ol]:ml-6 [&_a]:text-purple-400 [&_a]:underline"
-                  dangerouslySetInnerHTML={{ __html: parseHTML(product.description) }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(parseHTML(product.description)) }}
                 />
               </div>
             </motion.div>

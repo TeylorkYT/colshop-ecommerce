@@ -9,6 +9,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/components/ui/use-toast';
 
+import DOMPurify from 'dompurify';
+
 // FIX: Decodificador recursivo para renderizar HTML escapado desde la BD
 const parseHTML = (htmlStr) => {
   if (!htmlStr) return '';
@@ -92,7 +94,7 @@ const ProductCard = ({ product }) => {
             </h3>
             <div 
               className="text-sm text-gray-400 line-clamp-2 leading-relaxed [&>p]:inline"
-              dangerouslySetInnerHTML={{ __html: parseHTML(product.description) }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(parseHTML(product.description)) }}
             />
           </div>
 

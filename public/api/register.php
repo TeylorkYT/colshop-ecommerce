@@ -3,6 +3,9 @@ include_once 'db.php';
 $data = json_decode(file_get_contents("php://input"));
 
 if(isset($data->email) && isset($data->password)) {
+    // Evitar spam de registros (máx 3 por hora por IP)
+    check_rate_limit($conn, 'register', 3, 60);
+
     // Verificar si el email ya existe
     $check = $conn->prepare("SELECT id FROM users WHERE email = :email");
     $check->bindParam(":email", $data->email);
