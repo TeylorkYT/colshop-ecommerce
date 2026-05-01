@@ -6,7 +6,49 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    @apply bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 bg-slate-900 text-white;
+@layer base {
+  :root {
+    --background: 240 50% 4%; /* #05050A */
+    --foreground: 210 40% 98%;
+
+    --card: 240 40% 7%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 240 40% 7%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 271 91% 65%; /* Purple */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 330 80% 60%; /* Pink */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 240 20% 15%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 271 91% 65%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 20% 18%;
+    --input: 240 20% 18%;
+    --ring: 271 91% 65%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground bg-fixed antialiased;
     font-family: 'DM Sans', sans-serif;
+    /* Fondo radial unificado y premium */
+    background-image: radial-gradient(circle at top center, rgba(107, 33, 168, 0.15) 0%, rgba(5, 5, 10, 1) 100%);
+    background-attachment: fixed;
+  }
 }

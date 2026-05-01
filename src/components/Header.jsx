@@ -75,7 +75,7 @@ const Header = () => {
             <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
             
             {/* Contenedor del Logo (Glassmorphism) */}
-            <div className="relative w-14 h-14 flex items-center justify-center rounded-xl bg-gray-800/80 border border-white/10 backdrop-blur-md shadow-2xl group-hover:border-purple-500/50 group-hover:scale-105 group-hover:-rotate-3 transition-all duration-300">
+            <div className="relative w-14 h-14 flex items-center justify-center rounded-xl bg-black/40 border border-white/10 backdrop-blur-md shadow-2xl group-hover:border-purple-500/50 group-hover:scale-105 group-hover:-rotate-3 transition-all duration-300">
               <img
                 src="/logo.png"
                 alt="Colshop Logo"
@@ -619,7 +619,7 @@ const Header = () => {
 
                         onClick={() => setMobileMenuOpen(false)}
 
-                        className="block text-gray-300 hover:text-white transition-colors py-2 flex items-center gap-2"
+                        className="flex text-gray-300 hover:text-white transition-colors py-2 items-center gap-2"
 
                       >
 

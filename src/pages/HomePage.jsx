@@ -51,7 +51,7 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0B0B0F] selection:bg-purple-500/30">
+    <div className="min-h-screen bg-transparent selection:bg-purple-500/30">
       <Helmet>
         <title>Colshop - {t.home.heroTitleSuffix}</title>
         <meta name="description" content={t.home.heroSubtitle} />

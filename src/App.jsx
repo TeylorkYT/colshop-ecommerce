@@ -45,7 +45,7 @@ function App() {
             <AuthProvider>
               <DatabaseProvider>
               <CartProvider>
-                <div className="min-h-screen bg-gray-900">
+                <div className="min-h-screen bg-transparent text-foreground flex flex-col">
                   <ConditionalHeader />
                   <Suspense fallback={<div className="flex h-[80vh] items-center justify-center"><Loader2 className="w-12 h-12 animate-spin text-purple-500" /></div>}>
                     <Routes>
